@@ -75,7 +75,7 @@ function processBowerInfo(bowerInfoArr){
 	bowerInfoArr.forEach(function(bowerInfo){			
 		var cmd = "git show HEAD~1:" + bowerInfo.bowerJsonFile;		
 		execute(cmd, function(bowerJson){
-			
+			console.log(bowerJson);
 			bowerInfo.previousBowerVersion = getBowerJsonVersion(bowerJson);
 			arr.push(bowerInfo);
 			count -- ;
@@ -85,6 +85,25 @@ function processBowerInfo(bowerInfoArr){
 					
 		})
 	})
+}
+
+function processAllBowerInfo(bowerInfoArray){
+	
+	var wrongVersionComponents = []
+	bowerInfoArray.forEach(function(bowerInfo){
+		
+		if (!checkVersionHasIncreased(bowerInfo.bowerVersion, bowerInfo.previousBowerVersion)) {
+			wrongVersionComponents.push(bowerInfo);
+		}
+	})
+	if(wrongVersionComponents.length > 0){
+		console.log("These components did not increase version number correctly")
+		wrongVersionComponents.forEach(function(info){
+			console.log("Component: ", info.componentName,"previous: ", info.previousBowerVersion, "current: ", info.bowerVersion);
+		})	
+
+		exitWithCode(1);
+	}
 }
 
 function checkVersionHasIncreased(currBowerVersion, prevBowerVersion) {
@@ -104,24 +123,6 @@ function checkVersionHasIncreased(currBowerVersion, prevBowerVersion) {
 	return false;
 }
 
-function processAllBowerInfo(bowerInfoArray){
-	
-	var wrongVersionComponents = []
-	bowerInfoArray.forEach(function(bowerInfo){
-		console.log(bowerInfo);
-		if (!checkVersionHasIncreased(bowerInfo.bowerVersion, bowerInfo.previousBowerVersion)) {
-			wrongVersionComponents.push(bowerInfo);
-		}
-	})
-	if(wrongVersionComponents.length > 0){
-		console.log("These components did not increase version number correctly")
-		wrongVersionComponents.forEach(function(info){
-			console.log("Component: ", info.componentName,"previous: ", info.previousBowerVersion, "current: ", info.bowerVersion);
-		})	
-
-		exitWithCode(1);
-	}
-}
 
 function exitWithError(msg){
 	console.log(msg);
