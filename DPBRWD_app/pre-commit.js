@@ -60,8 +60,9 @@ function getBowerJsonVersion(json){
 function getBowerInfo(componentInfoArray){
 	
 	componentInfoArray.forEach(function(info){
-		console.log(info.bowerJsonFile);
-		info.bowerVersion = getBowerJsonVersion(fs.readFileSync(info.bowerJsonFile,'utf8'));		
+		// console.log(info.bowerJsonFile);		
+		info.bowerVersion = getBowerJsonVersion(fs.readFileSync(info.bowerJsonFile,'utf8'));
+		
 	})
 	return componentInfoArray;
 }
@@ -72,8 +73,9 @@ function processBowerInfo(bowerInfoArr){
 
 	var arr = [];
 	bowerInfoArr.forEach(function(bowerInfo){			
-		var cmd = "git show HEAD~1:" + bowerInfo.bowerFile;		
+		var cmd = "git show HEAD~1:" + bowerInfo.bowerJsonFile;		
 		execute(cmd, function(bowerJson){
+			
 			bowerInfo.previousBowerVersion = getBowerJsonVersion(bowerJson);
 			arr.push(bowerInfo);
 			count -- ;
@@ -86,6 +88,7 @@ function processBowerInfo(bowerInfoArr){
 }
 
 function checkVersionHasIncreased(currBowerVersion, prevBowerVersion) {
+	if(!prevBowerVersion) return true;
 	var currVersion = currBowerVersion.split('.');
 	var prevVersion = prevBowerVersion.split('.');
 
