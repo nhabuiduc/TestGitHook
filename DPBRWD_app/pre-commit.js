@@ -7,18 +7,18 @@ function execute(command, callback){
 
 function getChangedComponents(names){
 	var componentInfoArray = [];
-	var names = [];
+	var componentNames = [];
 	names.forEach(function(value){
 		var split =value.split('/');
 
 		if(split.length>=3 && split[1] === 'components' ){
 			var componentName = split[2];
-			if(names.indexOf(componentName)<0){
+			if(componentNames.indexOf(componentName)<0){
 				componentInfoArray.push({
 					componentName: componentName
 				});	
 			}		
-			names.push(componentName);				
+			componentNames.push(componentName);				
 		}		
 	})
 
