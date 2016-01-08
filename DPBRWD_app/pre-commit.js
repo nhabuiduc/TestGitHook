@@ -29,7 +29,7 @@ function findBowerJsonFile(componentName){
 }
 
 function findBowerJsonFiles(componentInfoArray){	
-	componentNames.forEach(function(componentInfo){		
+	componentInfoArray.forEach(function(componentInfo){		
 		componentInfo.bowerJsonFile = 'DPBRWD_app/components/'+ componentInfo.componentName+ '/bower.json';
 	})
 
@@ -58,8 +58,7 @@ function getBowerJsonVersion(json){
 function getBowerInfo(componentInfoArray){
 	
 	componentInfoArray.forEach(function(info){
-		info.bowerVersion = getBowerJsonVersion(fs.readFileSync(file,'utf8')
-		
+		info.bowerVersion = getBowerJsonVersion(fs.readFileSync(file,'utf8'));		
 	})
 	return componentInfoArray;
 }
@@ -141,8 +140,6 @@ execute('git diff --cached --name-only', function(data){
 		exitWithCode(1);
 	}
 
-	componentInfoArray = getBowerInfo(componentInfoArray);
-
-	console.log(currBowerInfo);
-	processBowerInfo(currBowerInfo);
+	componentInfoArray = getBowerInfo(componentInfoArray);	
+	processBowerInfo(componentInfoArray);
 })
