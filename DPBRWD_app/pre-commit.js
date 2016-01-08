@@ -26,9 +26,6 @@ function getChangedComponents(names){
 	
 }
 
-function findBowerJsonFile(componentName){
-	return   'DPBRWD_app/components/'+ componentName+ '/bower.json';
-}
 
 function findBowerJsonFiles(componentInfoArray){	
 	componentInfoArray.forEach(function(componentInfo){		
@@ -57,7 +54,7 @@ function getBowerJsonVersion(json){
 	return obj.version;
 }
 
-function getBowerInfo(componentInfoArray){
+function getBowerVersion(componentInfoArray){
 	
 	componentInfoArray.forEach(function(info){
 		// console.log(info.bowerJsonFile);		
@@ -67,7 +64,7 @@ function getBowerInfo(componentInfoArray){
 	return componentInfoArray;
 }
 
-function processBowerInfo(bowerInfoArr){	
+function checkAllBowerVersions(bowerInfoArr){	
 	// console.log(bowerInfoArr);
 	var count = bowerInfoArr.length;	
 
@@ -96,6 +93,7 @@ function processAllBowerInfo(bowerInfoArray){
 			wrongVersionComponents.push(bowerInfo);
 		}
 	})
+
 	if(wrongVersionComponents.length > 0){
 		console.log("These components did not increase version number correctly")
 		wrongVersionComponents.forEach(function(info){
@@ -149,6 +147,6 @@ execute('git diff --cached --name-only', function(data){
 		exitWithCode(1);
 	}
 
-	componentInfoArray = getBowerInfo(componentInfoArray);	
-	processBowerInfo(componentInfoArray);
+	componentInfoArray = getBowerVersion(componentInfoArray);	
+	checkAllBowerVersions(componentInfoArray);
 })
