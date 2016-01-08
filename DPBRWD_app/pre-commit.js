@@ -1,6 +1,8 @@
 var exec = require('child_process').exec;
 var fs = require('fs');
 
+var zeroVersion = "0.0.0";
+
 function execute(command, callback){
     exec(command, function(error, stdout, stderr){ callback(stdout); });
 };
@@ -50,15 +52,19 @@ function getMissingBowerJsonFiles(fileChanges,componentInfoArray){
 }
 
 function getBowerJsonVersion(json){
+	if(!json) return zeroVersion;
 	var obj = JSON.parse(json);
-	return obj.version;
+	return obj.version || zeroVersion;
 }
 
 function getBowerVersion(componentInfoArray){
 	
 	componentInfoArray.forEach(function(info){
-		// console.log(info.bowerJsonFile);		
-		info.bowerVersion = getBowerJsonVersion(fs.readFileSync(info.bowerJsonFile,'utf8'));
+		info.bowerVersion = zeroVersion;
+		if(fs.existsSync(info.bowerJsonFile)){
+			info.bowerVersion = getBowerJsonVersion(fs.readFileSync(info.bowerJsonFile,'utf8'));	
+		}	
+		
 		
 	})
 	return componentInfoArray;
@@ -72,7 +78,7 @@ function checkAllBowerVersions(bowerInfoArr){
 	bowerInfoArr.forEach(function(bowerInfo){			
 		var cmd = "git show HEAD~1:" + bowerInfo.bowerJsonFile;		
 		execute(cmd, function(bowerJson){
-			// console.log(bowerJson);
+			
 			bowerInfo.previousBowerVersion = getBowerJsonVersion(bowerJson);
 			arr.push(bowerInfo);
 			count -- ;
