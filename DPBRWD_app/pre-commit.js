@@ -68,7 +68,7 @@ function getBowerInfo(componentInfoArray){
 }
 
 function processBowerInfo(bowerInfoArr){	
-	console.log(bowerInfoArr);
+	// console.log(bowerInfoArr);
 	var count = bowerInfoArr.length;	
 
 	var arr = [];
@@ -108,6 +108,7 @@ function processAllBowerInfo(bowerInfoArray){
 	
 	var wrongVersionComponents = []
 	bowerInfoArray.forEach(function(bowerInfo){
+		console.log(bowerInfo);
 		if (!checkVersionHasIncreased(bowerInfo.bowerVersion, bowerInfo.previousBowerVersion)) {
 			wrongVersionComponents.push(bowerInfo);
 		}
