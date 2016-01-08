@@ -7,16 +7,18 @@ function execute(command, callback){
 
 function getChangedComponents(names){
 	var componentInfoArray = [];
+	var names = [];
 	names.forEach(function(value){
 		var split =value.split('/');
 
 		if(split.length>=3 && split[1] === 'components' ){
 			var componentName = split[2];
-			if(componentInfoArray.indexOf(componentName)<0){
+			if(names.indexOf(componentName)<0){
 				componentInfoArray.push({
 					componentName: componentName
 				});	
-			}						
+			}		
+			names.push(componentName);				
 		}		
 	})
 
@@ -58,12 +60,14 @@ function getBowerJsonVersion(json){
 function getBowerInfo(componentInfoArray){
 	
 	componentInfoArray.forEach(function(info){
-		info.bowerVersion = getBowerJsonVersion(fs.readFileSync(file,'utf8'));		
+		console.log(info.bowerJsonFile);
+		info.bowerVersion = getBowerJsonVersion(fs.readFileSync(info.bowerJsonFile,'utf8'));		
 	})
 	return componentInfoArray;
 }
 
 function processBowerInfo(bowerInfoArr){	
+	console.log(bowerInfoArr);
 	var count = bowerInfoArr.length;	
 
 	var arr = [];
