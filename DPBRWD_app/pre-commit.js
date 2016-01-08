@@ -75,7 +75,7 @@ function processBowerInfo(bowerInfoArr){
 	bowerInfoArr.forEach(function(bowerInfo){			
 		var cmd = "git show HEAD~1:" + bowerInfo.bowerJsonFile;		
 		execute(cmd, function(bowerJson){
-			console.log(bowerJson);
+			// console.log(bowerJson);
 			bowerInfo.previousBowerVersion = getBowerJsonVersion(bowerJson);
 			arr.push(bowerInfo);
 			count -- ;
@@ -99,7 +99,7 @@ function processAllBowerInfo(bowerInfoArray){
 	if(wrongVersionComponents.length > 0){
 		console.log("These components did not increase version number correctly")
 		wrongVersionComponents.forEach(function(info){
-			console.log("Component: ", info.componentName,"previous: ", info.previousBowerVersion, "current: ", info.bowerVersion);
+			console.log("Component: ", info.componentName,", previous: ", info.previousBowerVersion, ", current: ", info.bowerVersion);
 		})	
 
 		exitWithCode(1);
