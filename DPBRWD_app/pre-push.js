@@ -11,6 +11,7 @@ execute("git cherry",function(data){
 	console.log(data);
     
     data = data.replace(/\+/g,"").replace(/ /g,"");
+    
     var commits = data.split('\n');
     
     var allFileChanges = []
