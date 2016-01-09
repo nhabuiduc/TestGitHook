@@ -5,7 +5,7 @@ var fs = require('fs');
 var BowerVersionHook = require("./bower-version-hook");
 
 var hook = new BowerVersionHook();
-hook.gitShowCmd = 'git show FETCH_HEAD';
+hook.gitShowCmd = 'git show FETCH_HEAD:';
 hook.getChangeFileChanges = function (callback) {
 
     execute("git cherry", function (data) {
