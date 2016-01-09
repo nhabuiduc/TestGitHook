@@ -198,14 +198,14 @@ function checkVersionHasIncreased(currBowerVersion, prevBowerVersion) {
     var currVersion = currBowerVersion.split('.').clean("");
     var prevVersion = prevBowerVersion.split('.').clean("");
 
-    if (currVersion[0] > prevVersion[0]) return true;
-    if (currVersion[0] < prevVersion[0]) return false;
+    if (+currVersion[0] > prevVersion[0]) return true;
+    if (+currVersion[0] < prevVersion[0]) return false;
 
-    if (currVersion[1] > prevVersion[1]) return true;
-    if (currVersion[1] < prevVersion[1]) return false;
+    if (+currVersion[1] > prevVersion[1]) return true;
+    if (+currVersion[1] < prevVersion[1]) return false;
 
-    if (currVersion[2] > prevVersion[2]) return true;
-    if (currVersion[2] < prevVersion[2]) return false;
+    if (+currVersion[2] > prevVersion[2]) return true;
+    if (+currVersion[2] < prevVersion[2]) return false;
 
     return false;
 }
