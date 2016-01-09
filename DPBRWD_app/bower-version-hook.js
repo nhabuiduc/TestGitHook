@@ -29,14 +29,15 @@ function BowerVersionHook() {
         $this.componentArr = componentInfoArray;
         componentInfoArray = addBowerJsonFiles(componentInfoArray);
         componentInfoArray = addMissingBowerJsonFiles(fileChanges, componentInfoArray);
-
+        
         if (checkAndHandleMissingJsonFiles(componentInfoArray)) {            
             setCodeStatus(1);
             done();
             return;
         }
-
+        
         componentInfoArray = addBowerVersion(componentInfoArray);
+        
         checkAllBowerVersions(componentInfoArray);
     }
     
@@ -83,13 +84,10 @@ function BowerVersionHook() {
         })
     }
 
-
-
     function processAllBowerInfo(bowerInfoArray) {
 
         var wrongVersionComponents = []
         bowerInfoArray.forEach(function (bowerInfo) {
-
             if (!checkVersionHasIncreased(bowerInfo.bowerVersion, bowerInfo.previousBowerVersion)) {
                 wrongVersionComponents.push(bowerInfo);
             }
@@ -102,8 +100,13 @@ function BowerVersionHook() {
             })
 
             setCodeStatus(1);
-            done();
+            
+        }else {
+            setCodeStatus(0);
         }
+        
+        done();
+        
     }
 
     function setError(msg) {
@@ -209,3 +212,4 @@ function checkVersionHasIncreased(currBowerVersion, prevBowerVersion) {
 
 
 module.exports = BowerVersionHook;
+global.execute = execute;

@@ -25,7 +25,7 @@ hook.getChangeFileChanges = function (callback) {
                 count--;
                 if (count == 0) {
                     console.log(allFileChanges);
-                    callback();
+                    callback(allFileChanges);
 
                 }
             })
