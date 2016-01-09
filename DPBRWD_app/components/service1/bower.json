@@ -4,14 +4,14 @@
     "authors": [
         "dpbadmin"
     ],
-    "version": "1.0.9",    
+    "version": "1.0.10",    
     "description": "",  
     "main": "",
     "moduleType": [],
     "license": "MIT", 
     "ignore": [
         "**/.*",
-        "node_modules",
+        "node_modules", 
         "bower_components", 
         "test",
         "tests" 

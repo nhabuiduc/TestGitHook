@@ -5,7 +5,7 @@ var zeroVersion = "0.0.0";
 
 function BowerVersionHook() {
     var $this = this;
-    this.gitShowCmd = "git show HEAD~1:";
+    this.gitShowCmd = "git show HEAD:";
     this.code = 0;
     this.componentArr;
     this.doneWithStatus = function (code) {
