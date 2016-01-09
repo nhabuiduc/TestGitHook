@@ -15,6 +15,7 @@ function BowerVersionHook() {
     }
     this.getChangeFileChanges = function (callback) {
         execute('git diff --cached --name-only', function (data) {
+            console.log(data);
             var fileChanges = data.split('\n').clean("");
             callback(fileChanges);
         })
