@@ -11,6 +11,7 @@ function BowerVersionHook() {
     this.doneWithStatus = function (code) {
         console.log('exit with code: ', code);
         console.log($this.componentArr);
+        console.log("ERROR: please fix above errors")
         process.exit(code);
     }
     this.getChangeFileChanges = function (callback) {
