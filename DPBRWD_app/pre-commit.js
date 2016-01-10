@@ -1,3 +1,4 @@
+/* global process */
 /* global execute */
 var BowerVersionHook = require("./bower-version-hook");
 var fs = require('fs');
@@ -10,8 +11,13 @@ hook.getFileChanges = function () {
         return data.split('\n').clean("")
     })
 }
-hook.execute().then(function (componentInfoArr) {    
+hook.execute().then(function (componentInfoArr) {
+    if(!checkBowerJsonVersionExits(componentInfoArr)){
+        process.exit(1);
+    }
+    
     increaseVersionAllComponents(componentInfoArr);
+    
 });
 
 function increaseVersionAllComponents(componentInfoArr) {
@@ -33,9 +39,22 @@ function increaseVersionAllComponents(componentInfoArr) {
           if(result.length > 0 ){
             console.log("Done: increasing version");    
           }
-          
-         // process.exit(1);
       })  
+}
+
+function checkBowerJsonVersionExits(componentInfoArr){
+    var missingBowerFiles = _.chain(componentInfoArr)
+    .filter(function(f){ return !f.bowerFileExisting })
+    .forEach(function(f) {  console.log("ERROR: please add bower.json file for component: ", f.componentName) })
+    .value();
+    
+    var missingVersions = 
+    _.chain(componentInfoArr)
+    .filter(function(f){ return !f.bowerVersionExisting })
+    .forEach(function(f) {  console.log("ERROR: please add version to bower.js file for component: ", f.componentName) })
+    .value();
+    
+    return missingVersions.length == 0 && missingBowerFiles.length == 0;
 }
 
 function stageBowerJsonFile(file) {

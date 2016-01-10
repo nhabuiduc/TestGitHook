@@ -2,7 +2,7 @@ var exec = require('child_process').exec;
 var fs = require('fs');
 var Promise = require("./bluebird");
 var _ = require("./lodash");
-var zeroVersion = "0.0.0";
+var notFoundVersion = "-1.0.0";
 
 function BowerVersionHook() {
     var $this = this;
@@ -31,7 +31,7 @@ function BowerVersionHook() {
 
     function mapToComponentInfo(componentName, fileChanges) {
         var bowerJsonFile = 'DPBRWD_app/components/' + componentName + '/bower.json';
-        var bowerVersion = zeroVersion;
+        var bowerVersion = notFoundVersion;
         var bowerFileExisting = fs.existsSync(bowerJsonFile);
         if (bowerFileExisting) {
             bowerVersion = getBowerJsonVersion(fs.readFileSync(bowerJsonFile, 'utf8'));
@@ -41,7 +41,8 @@ function BowerVersionHook() {
             bowerJsonFile: bowerJsonFile,
             missingJsonChanged: fileChanges.indexOf(bowerJsonFile) < 0,
             bowerVersion: bowerVersion,
-            bowerFileExisting: bowerFileExisting
+            bowerFileExisting: bowerFileExisting,
+            bowerVersionExisting: bowerVersion != notFoundVersion
         }
     }
 
@@ -86,9 +87,9 @@ function execute(command) {
 
 
 function getBowerJsonVersion(json) {
-    if (!json) return zeroVersion;
+    if (!json) return notFoundVersion;
     var obj = JSON.parse(json);
-    return obj.version || zeroVersion;
+    return obj.version || notFoundVersion;
 }
 
 function checkVersionHasIncreased(currBowerVersion, prevBowerVersion) {
