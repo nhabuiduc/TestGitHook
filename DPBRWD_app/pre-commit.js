@@ -11,6 +11,7 @@ hook.getFileChanges = function () {
         return data.split('\n').clean("")
     })
 }
+
 hook.execute().then(function (componentInfoArr) {
     if(!checkBowerJsonVersionExits(componentInfoArr)){
         process.exit(1);
