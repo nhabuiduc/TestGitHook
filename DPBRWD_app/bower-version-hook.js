@@ -61,9 +61,10 @@ function BowerVersionHook() {
         return _.chain(componentArr)
             .filter(function (f) { return !f.versionIncreased })
             .forEach(function (f) {
-                console.log(" Increase bower version for component: ", f.componentName, ", version: ", f.previousBowerVersion);
+                console.log("ERROR: Please increase bower version for component:", f.componentName, ", version: ", f.previousBowerVersion);
             })
-            .some()
+            .value()
+            .length > 0;
     }        
 }
 

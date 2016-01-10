@@ -4,10 +4,10 @@
     "authors": [
         "dpbadmin"
     ], 
-    "version": "1.0.32",       
+    "version": "1.0.33",        
     "description": "",      
     "main": "",   
-    "moduleType": [],
+    "moduleType": [], 
     "license": "MIT", 
     "ignore": [ 
         "**/.*",
