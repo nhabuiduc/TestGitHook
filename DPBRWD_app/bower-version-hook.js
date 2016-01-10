@@ -16,7 +16,7 @@ function BowerVersionHook() {
     }
 
     function hookWithFileChanges(fileChanges) {
-        console.log(fileChanges);
+        //console.log(fileChanges);
         var componentInfoPromises = _.chain(fileChanges)
             .map(function (path) { return path.split('/').clean(""); })
             .filter(function (pathSplit) { return pathSplit.length >= 3 && pathSplit[1] === 'components' })
