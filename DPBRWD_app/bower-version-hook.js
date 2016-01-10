@@ -31,36 +31,11 @@ function BowerVersionHook() {
         $this.componentArr = componentInfoArray;
         componentInfoArray = addBowerJsonFiles(componentInfoArray);
         componentInfoArray = addMissingBowerJsonFiles(fileChanges, componentInfoArray);
-        
-        if (checkAndHandleMissingJsonFiles(componentInfoArray)) {            
-            setCodeStatus(1);
-            done();
-            return;
-        }
-        
+                
         componentInfoArray = addBowerVersion(componentInfoArray);
         
         checkAllBowerVersions(componentInfoArray);
-    }
-    
-    function checkAndHandleMissingJsonFiles(componentInfoArray){
-        var missing = [];
-        componentInfoArray.forEach(function(info){
-            if(info.missingJsonChanged){
-                missing.push(info);
-            }
-        })
-        
-        if(missing.length > 0 ){
-            console.log('those components changes without changing version in bower.json file')
-            missing.forEach(function (info) {
-                console.log("component: " + info.componentName);
-            })
-            return true;
-        }
-        
-        return false;
-    }
+    }    
 
     function done() {
         $this.doneWithStatus($this.code);
@@ -188,8 +163,6 @@ function addBowerVersion(componentInfoArray) {
         if (fs.existsSync(info.bowerJsonFile)) {
             info.bowerVersion = getBowerJsonVersion(fs.readFileSync(info.bowerJsonFile, 'utf8'));
         }
-
-
     })
     return componentInfoArray;
 }
