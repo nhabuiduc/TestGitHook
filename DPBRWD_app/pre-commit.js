@@ -10,10 +10,7 @@ hook.getFileChanges = function () {
         return data.split('\n').clean("")
     })
 }
-hook.execute().then(function (componentInfoArr) {
-    if(hook.checkAndShowError(componentInfoArr)){
-        process.exit(1);
-    }
+hook.execute().then(function (componentInfoArr) {    
     increaseVersionAllComponents(componentInfoArr);
 });
 
