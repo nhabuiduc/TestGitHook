@@ -23,7 +23,7 @@ function increaseVersionAllComponents(componentInfoArr) {
     var promises = _.chain(componentInfoArr)
         .filter(function (info) { return !info.versionIncreased })
         .map(function (info) {                        
-             increaseVersion(info).then(function(json){
+             return increaseVersion(info).then(function(json){
                  
                 if(!json) return null;
                 fs.writeFileSync(info.bowerJsonFile, json);
