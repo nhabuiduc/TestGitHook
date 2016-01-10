@@ -56,13 +56,15 @@ function BowerVersionHook() {
     }
     
     function checkAndShowError(componentArr){
-        if(componentArr.length ==0) return false;
+        
+        if(_.filter(componentArr, function(f){ return !f.versionIncreased }).length == 0) return false;
         console.log("ERROR: Please increase bower verion in these components");
         _.chain(componentArr)
          .filter(function(f){ return !f.versionIncreased })
          .forEach(function(f){
-             console.log("component: ", f.componentName,", version: ", f.previousVersion);
+             console.log(" - Component: ", f.componentName,", version: ", f.previousBowerVersion);
          })
+         .value();
          
          return true;
     }
