@@ -16,8 +16,7 @@ hook.execute().then(function (componentInfoArr) {
         process.exit(1);
     }
     
-    increaseVersionAllComponents(componentInfoArr);
-    
+    increaseVersionAllComponents(componentInfoArr);    
 });
 
 function increaseVersionAllComponents(componentInfoArr) {
