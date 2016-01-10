@@ -8,7 +8,7 @@ function BowerVersionHook() {
     var $this = this;
     this.gitShowCmd = "git show HEAD:";
     this.getFileChanges = null;
-    this.checkAndShowError=checkAndShowError;
+    this.checkAndShowError = checkAndShowError;
     this.execute = function () {
         return this.getFileChanges().then(function (data) {
             return hookWithFileChanges(data);
@@ -32,14 +32,16 @@ function BowerVersionHook() {
     function mapToComponentInfo(componentName, fileChanges) {
         var bowerJsonFile = 'DPBRWD_app/components/' + componentName + '/bower.json';
         var bowerVersion = zeroVersion;
-        if (fs.existsSync(bowerJsonFile)) {
+        var bowerFileExisting = fs.existsSync(bowerJsonFile);
+        if (bowerFileExisting) {
             bowerVersion = getBowerJsonVersion(fs.readFileSync(bowerJsonFile, 'utf8'));
         }
         return {
             componentName: componentName,
             bowerJsonFile: bowerJsonFile,
             missingJsonChanged: fileChanges.indexOf(bowerJsonFile) < 0,
-            bowerVersion: bowerVersion
+            bowerVersion: bowerVersion,
+            bowerFileExisting: bowerFileExisting
         }
     }
 
@@ -54,20 +56,15 @@ function BowerVersionHook() {
             });
         })
     }
-    
-    function checkAndShowError(componentArr){
-        
-        if(_.filter(componentArr, function(f){ return !f.versionIncreased }).length == 0) return false;
-        console.log("ERROR: Please increase bower verion in these components");
-        _.chain(componentArr)
-         .filter(function(f){ return !f.versionIncreased })
-         .forEach(function(f){
-             console.log(" - Component: ", f.componentName,", version: ", f.previousBowerVersion);
-         })
-         .value();
-         
-         return true;
-    }
+
+    function checkAndShowError(componentArr) {
+        return _.chain(componentArr)
+            .filter(function (f) { return !f.versionIncreased })
+            .forEach(function (f) {
+                console.log(" Increase bower version for component: ", f.componentName, ", version: ", f.previousBowerVersion);
+            })
+            .some()
+    }        
 }
 
 Array.prototype.clean = function (deleteValue) {
@@ -81,9 +78,9 @@ Array.prototype.clean = function (deleteValue) {
 };
 
 function execute(command) {
-    return new Promise(function(resolve,reject){
-        exec(command, function (error, stdout, stderr) { resolve(stdout); });    
-    })    
+    return new Promise(function (resolve, reject) {
+        exec(command, function (error, stdout, stderr) { resolve(stdout); });
+    })
 };
 
 

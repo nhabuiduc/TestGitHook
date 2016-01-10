@@ -11,8 +11,10 @@ hook.getFileChanges = function () {
     })
 }
 hook.execute().then(function (componentInfoArr) {
+    if(hook.checkAndShowError(componentInfoArr)){
+        process.ext(1);
+    }
     increaseVersionAllComponents(componentInfoArr);
-
 });
 
 function increaseVersionAllComponents(componentInfoArr) {
