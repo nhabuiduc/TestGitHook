@@ -22,10 +22,12 @@ function increaseVersionAllComponents(componentInfoArr) {
             console.log(" - Component: ", info.componentName);
             
              increaseVersion(info).then(function(json){
-                fs.writeFileSync(info.bowerJsonFile, bowerJsonStr);
+                if(!json) return null;
+                fs.writeFileSync(info.bowerJsonFile, json);
                 return stageBowerJsonFile(info.bowerJsonFile);     
              });            
         })
+        .filter(function(p){ return p != null; })
         .value();
       
       Promise.all(promises).then(function(result){
@@ -45,6 +47,7 @@ function stageBowerJsonFile(file) {
 function increaseVersion(info) {
     var bowerJsonStr = fs.readFileSync(info.bowerJsonFile, 'utf8');
     return execute("git show HEAD:" + info.bowerJsonFile).then(function(json){
+        if(!json) return "";
         var versions = JSON.parse(json).version.split(".");
         versions[2] = +versions[2] + 1;
         var newVersion = _(versions).join(".");
