@@ -19,7 +19,7 @@ hook.getFileChanges = function () {
                 var cmd = 'git diff-tree --no-commit-id --name-only -r ' + commit;
                 return new Promise(function (resolve, reject) {
                     execute(cmd, function (commitFileChanges) {
-                        resolve(commitFileChanges);
+                        resolve(commitFileChanges.split('\n').clean(""));
                     });
                 })
             });
