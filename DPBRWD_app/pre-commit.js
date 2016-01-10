@@ -21,7 +21,7 @@ function increaseVersionAllComponents(componentInfoArr) {
         .map(function (info) {
             console.log(" - Component: ", info.componentName);
             
-             increaseVersion(info). then(function(json){
+             increaseVersion(info).then(function(json){
                 fs.writeFileSync(info.bowerJsonFile, bowerJsonStr);
                 return stageBowerJsonFile(info.bowerJsonFile);     
              });            
@@ -44,7 +44,7 @@ function stageBowerJsonFile(file) {
 
 function increaseVersion(info) {
     var bowerJsonStr = fs.readFileSync(info.bowerJsonFile, 'utf8');
-    execute("git show HEAD:" + info.bowerJsonFile).then(function(json){
+    return execute("git show HEAD:" + info.bowerJsonFile).then(function(json){
         var versions = JSON.parse(json).version.split(".");
         versions[2] = +versions[2] + 1;
         var newVersion = _(versions).join(".");
