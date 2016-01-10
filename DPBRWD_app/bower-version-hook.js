@@ -10,9 +10,7 @@ function BowerVersionHook() {
     this.getFileChanges = null;
     this.checkAndShowError = checkAndShowError;
     this.execute = function () {
-        return this.getFileChanges().then(function (data) {
-            return hookWithFileChanges(data);
-        })
+        return this.getFileChanges().then(hookWithFileChanges);
     }
 
     function hookWithFileChanges(fileChanges) {

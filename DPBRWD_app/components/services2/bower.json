@@ -4,13 +4,13 @@
     "authors": [
         "dpbadmin"
     ], 
-    "version": "1.0.37",          
+    "version": "1.0.38",          
     "description": "",      
     "main": "",    
     "moduleType": [], 
     "license": "MIT", 
     "ignore": [ 
-        "**/.*",
+        "**/.*", 
         "node_modules", 
         "bower_components", 
         "test",
