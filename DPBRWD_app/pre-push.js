@@ -1,36 +1,33 @@
 /* global execute */
 var exec = require('child_process').exec;
 var fs = require('fs');
-
+var _ = require("./lodash");
 var BowerVersionHook = require("./bower-version-hook");
 
 var hook = new BowerVersionHook();
 hook.gitShowCmd = 'git show FETCH_HEAD:';
-hook.getChangeFileChanges = function (callback) {
+hook.getFileChanges = function () {
+    var cherryPromise = new Promise(function (resolve, reject) {
+        execute("git cherry", function (data) {
+            resolve(data);
+        });
+    });
 
-    execute("git cherry", function (data) {
-
-        data = data.replace(/\+/g, "").replace(/ /g, "");
-
-        var commits = data.split('\n').clean("");
-
-        var allFileChanges = []
-        var count = commits.length;
-        console.log(commits);
-        commits.forEach(function (commit) {
-            var cmd = 'git diff-tree --no-commit-id --name-only -r ' + commit;
-
-            execute(cmd, function (commitFileChanges) {
-                addDistinct(allFileChanges, commitFileChanges.split('\n').clean(""));
-                count--;
-                if (count == 0) {
-                    console.log(allFileChanges);
-                    callback(allFileChanges);
-
-                }
-            })
-        })
+    return cherryPromise.then(function (data) {
+        var commits = data.replace(/\+/g, "").replace(/ /g, "").split('\n').clean("");
+        var promises= _.map(commits, function (commit) {
+                var cmd = 'git diff-tree --no-commit-id --name-only -r ' + commit;
+                return new Promise(function (resolve, reject) {
+                    execute(cmd, function (commitFileChanges) {
+                        resolve(commitFileChanges);
+                    });
+                })
+            });
+        return Promise.all(promises). then(function(commitFileChangesArr){
+            return _.flatten(commitFileChangesArr);
+        });  
     })
+
 }
 
 hook.execute();

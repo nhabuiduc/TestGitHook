@@ -6,7 +6,7 @@ var zeroVersion = "0.0.0";
 
 function BowerVersionHook() {
     var $this = this;
-    this.gitShowCmd = "git show HEAD:";    
+    this.gitShowCmd = "git show HEAD:";
     this.getFileChanges = null;
 
     this.execute = function () {
@@ -16,18 +16,17 @@ function BowerVersionHook() {
     }
 
     function hookWithFileChanges(fileChanges) {
-
-        var componentInfoPromises =
-            _.chain(fileChanges)
-                .map(function (path) { return path.split('/').clean(""); })
-                .filter(function (pathSplit) { return pathSplit.length >= 3 && pathSplit[1] === 'components' })
-                .map(function (pathSplit) { return pathSplit[2] })
-                .uniq()
-                .map(function (componentName) { return mapToComponentInfo(componentName, fileChanges) })
-                .map(function (componentInfo) {
-                    return checkWithPreviousBowerVersion(componentInfo);
-                })                
-                .value();
+        console.log(fileChanges);
+        var componentInfoPromises = _.chain(fileChanges)
+            .map(function (path) { return path.split('/').clean(""); })
+            .filter(function (pathSplit) { return pathSplit.length >= 3 && pathSplit[1] === 'components' })
+            .map(function (pathSplit) { return pathSplit[2] })
+            .uniq()
+            .map(function (componentName) { return mapToComponentInfo(componentName, fileChanges) })
+            .map(function (componentInfo) {
+                return checkWithPreviousBowerVersion(componentInfo);
+            })
+            .value();
 
         return Promise.all(componentInfoPromises);
     }
@@ -57,7 +56,7 @@ function BowerVersionHook() {
                 }));
             })
         })
-    }        
+    }
 }
 
 Array.prototype.clean = function (deleteValue) {
