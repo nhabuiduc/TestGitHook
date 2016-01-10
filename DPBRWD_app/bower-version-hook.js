@@ -23,9 +23,7 @@ function BowerVersionHook() {
             .map(function (pathSplit) { return pathSplit[2] })
             .uniq()
             .map(function (componentName) { return mapToComponentInfo(componentName, fileChanges) })
-            .map(function (componentInfo) {
-                return checkWithPreviousBowerVersion(componentInfo);
-            })
+            .map(function (componentInfo) { return checkWithPreviousBowerVersion(componentInfo); })
             .value();
 
         return Promise.all(componentInfoPromises);
@@ -47,14 +45,13 @@ function BowerVersionHook() {
 
     function checkWithPreviousBowerVersion(componentInfo) {
         var cmd = $this.gitShowCmd + componentInfo.bowerJsonFile;
-        return new Promise(function (resolve, reject) {
-            execute(cmd, function (bowerJson) {
-                var previousBowerVersion = getBowerJsonVersion(bowerJson);
-                resolve(_.assign(componentInfo, {
-                    previousBowerVersion: previousBowerVersion,
-                    versionIncreased: checkVersionHasIncreased(componentInfo.bowerVersion, previousBowerVersion)
-                }));
-            })
+
+        return execute(cmd).then(function (bowerJson) {
+            var previousBowerVersion = getBowerJsonVersion(bowerJson);
+            return _.assign(componentInfo, {
+                previousBowerVersion: previousBowerVersion,
+                versionIncreased: checkVersionHasIncreased(componentInfo.bowerVersion, previousBowerVersion)
+            });
         })
     }
 }
@@ -69,8 +66,10 @@ Array.prototype.clean = function (deleteValue) {
     return this;
 };
 
-function execute(command, callback) {
-    exec(command, function (error, stdout, stderr) { callback(stdout); });
+function execute(command) {
+    return new Promise(function(resolve,reject){
+        exec(command, function (error, stdout, stderr) { resolve(stdout); });    
+    })    
 };
 
 
