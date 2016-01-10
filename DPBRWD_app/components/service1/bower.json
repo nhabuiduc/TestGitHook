@@ -1,1 +1,19 @@
-undefined
+{
+    "name": "service1",
+    "homepage": "https://github.com/nhabuiduc/TestGitHook",
+    "authors": [
+        "dpbadmin"
+    ],
+    "version": "1.0.30",      
+    "description": "",    
+    "main": "",   
+    "moduleType": [],
+    "license": "MIT", 
+    "ignore": [ 
+        "**/.*",
+        "node_modules", 
+        "bower_components", 
+        "test",
+        "tests" 
+    ] 
+}    

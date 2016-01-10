@@ -21,11 +21,10 @@ function increaseVersionAllComponents(componentInfoArr) {
         .map(function (info) {
             console.log(" - Component: ", info.componentName);
             
-            bowerJsonStr = increaseVersion(info);
-            //console.log(bowerJsonStr);
-
-            fs.writeFileSync(info.bowerJsonFile, bowerJsonStr);
-            return stageBowerJsonFile(info.bowerJsonFile);
+             increaseVersion(info). then(function(json){
+                fs.writeFileSync(info.bowerJsonFile, bowerJsonStr);
+                return stageBowerJsonFile(info.bowerJsonFile);     
+             });            
         })
         .value();
       
