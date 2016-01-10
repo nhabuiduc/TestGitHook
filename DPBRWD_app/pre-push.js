@@ -14,7 +14,6 @@ hook.getFileChanges = function () {
             return execute(cmd).then(function (commitFileChanges) {
                 return commitFileChanges.split('\n').clean("");
             });
-
         });
         return Promise.all(promises).then(function (commitFileChangesArr) {
             return _.chain(commitFileChangesArr).flatten().uniq();
@@ -22,5 +21,9 @@ hook.getFileChanges = function () {
     })
 }
 
-hook.execute();
+hook.execute().then(function(arr){
+    if(hook.checkAndShowError(arr)){
+        process.exit(1);
+    }
+});
 

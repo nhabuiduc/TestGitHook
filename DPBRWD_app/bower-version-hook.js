@@ -8,7 +8,7 @@ function BowerVersionHook() {
     var $this = this;
     this.gitShowCmd = "git show HEAD:";
     this.getFileChanges = null;
-
+    this.checkAndShowError=checkAndShowError;
     this.execute = function () {
         return this.getFileChanges().then(function (data) {
             return hookWithFileChanges(data);
@@ -54,6 +54,18 @@ function BowerVersionHook() {
             });
         })
     }
+    
+    function checkAndShowError(componentArr){
+        if(componentArr.length ==0) return false;
+        console.log("ERROR: Please increase bower verion in these components");
+        _.chain(componentArr)
+         .filter(function(f){ return !f.versionIncreased })
+         .forEach(function(f){
+             console.log("component: ", f.componentName,", version: ", f.previousVersion);
+         })
+         
+         return true;
+    }
 }
 
 Array.prototype.clean = function (deleteValue) {
@@ -95,6 +107,8 @@ function checkVersionHasIncreased(currBowerVersion, prevBowerVersion) {
 
     return false;
 }
+
+
 
 module.exports = BowerVersionHook;
 global.execute = execute;
