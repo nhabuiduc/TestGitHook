@@ -10,7 +10,7 @@ hook.getFileChanges = function () {
     })
 }
 hook.execute().then(function (componentInfoArr) {
-    
+     
     _.map(componentInfoArr, function(componentInfo){
         
     })
